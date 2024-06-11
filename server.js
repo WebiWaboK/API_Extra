@@ -15,6 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 app.listen(PORT, () => {
     console.log(`API running on http://localhost:${PORT}`);
 });
