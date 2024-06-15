@@ -17,7 +17,7 @@ class BMIService {
       datasets: [
         {
           label: 'Rango de IMC',
-          data: [18.5, 25, 30, 35],
+          data: [18.5, 25, 30],
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: 'rgba(0, 0, 0, 1)',
           borderWidth: 1,
@@ -26,7 +26,7 @@ class BMIService {
         },
         {
           label: 'Tu IMC',
-          data: [null, null, null, bmi],
+          data: [bmi],
           backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 1,
