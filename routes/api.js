@@ -4,6 +4,7 @@ const bmiController = require('../controllers/bmiController');
 const authRoutes = require('./authRoutes');
 
 router.post('/calculate', bmiController.calculate);
+router.post('/bmi/calculate', bmiController.calculate);
 
 const userRoutes = require('./user');
 router.use('/users', userRoutes);
