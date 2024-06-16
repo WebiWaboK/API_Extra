@@ -13,20 +13,26 @@ class BMIService {
 
   getChartData(bmi) {
     return {
-      labels: ['Bajo peso', 'Peso normal', 'Sobrepeso', 'Obesidad'],
+      labels: ['15', '18.5', '25', '30'],
       datasets: [
         {
           label: 'Rango de IMC',
-          data: [18.5, 25, 30],
+          data: [
+            { x: 15, y: 0 },
+            { x: 18.5, y: 0 },
+            { x: 25, y: 0 },
+            { x: 30, y: 0 }
+          ],
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: 'rgba(0, 0, 0, 1)',
           borderWidth: 1,
           pointRadius: 0,
-          fill: false
+          fill: false,
+          showLine: true
         },
         {
           label: 'Tu IMC',
-          data: [bmi],
+          data: [{ x: bmi, y: 0 }],
           backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 1,
