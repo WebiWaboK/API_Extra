@@ -1,21 +1,31 @@
-const { verifyToken } = require('../utils/jwt'); // Asegúrate de que la ruta sea correcta
+const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_SECRET || 'your_jwt_secret';
+
+const generateToken = (payload) => {
+  return jwt.sign(payload, secret, { expiresIn: '1h' });
+};
+
+const verifyToken = (token) => {
+  return jwt.verify(token, secret);
+};
 
 module.exports = (req, res, next) => {
-  const token = req.cookies.jwt; // O puedes obtener el token de los headers
-  console.log('JWT Token:', token); // Log del token JWT
-  if (token) {
-    try {
-      const decoded = verifyToken(token);
-      req.user = decoded;
-      res.locals.user = req.user;
-      console.log('Session User:', req.user); // Log del usuario en sesión
-    } catch (error) {
-      console.error('JWT Verification Error:', error); // Log del error de verificación JWT
-      res.clearCookie('jwt');
-      return res.status(401).json({ error: 'Token inválido o expirado' });
-    }
-  } else {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
     return res.status(401).json({ error: 'No se proporcionó token' });
   }
-  next();
+
+  try {
+    const decoded = verifyToken(token);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.error('JWT Verification Error:', error);
+    return res.status(401).json({ error: 'Token inválido o expirado' });
+  }
 };
+
+module.exports.generateToken = generateToken;
+module.exports.verifyToken = verifyToken;
