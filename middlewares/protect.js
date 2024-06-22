@@ -1,3 +1,4 @@
+// middlewares/protect.js
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET || 'your_jwt_secret';
 
@@ -9,7 +10,7 @@ const verifyToken = (token) => {
   return jwt.verify(token, secret);
 };
 
-module.exports = (req, res, next) => {
+const protect = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -27,5 +28,4 @@ module.exports = (req, res, next) => {
   }
 };
 
-module.exports.generateToken = generateToken;
-module.exports.verifyToken = verifyToken;
+module.exports = { generateToken, verifyToken, protect };

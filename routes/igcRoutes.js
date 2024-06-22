@@ -1,7 +1,8 @@
+// routes/igcRoutes.js
 const express = require('express');
 const router = express.Router();
 const igcController = require('../controllers/igcController');
-const protect = require('../middlewares/protect');
+const { protect } = require('../middlewares/protect');
 
 router.post('/calculate', protect, igcController.calculateIGC);
 
