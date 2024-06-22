@@ -1,4 +1,3 @@
-// routes/igcRoutes.js
 const express = require('express');
 const router = express.Router();
 const igcController = require('../controllers/igcController');
