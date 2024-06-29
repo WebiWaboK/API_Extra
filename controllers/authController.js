@@ -26,17 +26,3 @@ exports.logout = (req, res) => {
   res.clearCookie('jwt');
   res.json({ message: 'Logged out successfully' });
 };
-
-exports.protect = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, secret);
-      req.user = decoded;
-      res.locals.user = req.user;
-    } catch (error) {
-      res.clearCookie('jwt');
-    }
-  }
-  next();
-};
