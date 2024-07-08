@@ -1,47 +1,18 @@
+const db = require('../config/database');
 const BMI = require('../models/bmi');
 
 class BMIService {
-  calculateBMI(weight, height) {
+  async calculateBMI(userId, weight, height) {
     const bmiModel = new BMI(weight, height);
-    const bmi = parseFloat(bmiModel.calculateBMI().toFixed(1));
+    let bmi = bmiModel.calculateBMI();
+    bmi = parseFloat(bmi.toFixed(1)); // Limitar a 1 decimal
     const category = bmiModel.getCategory(bmi);
     const recommendations = bmiModel.getRecommendations(category);
-    const chartData = this.getChartData(bmi);
 
-    return { bmi, category, recommendations, chartData };
-  }
+    const query = 'INSERT INTO bmi_entries (user_id, weight, height, bmi, category, recommendations) VALUES (?, ?, ?, ?, ?, ?)';
+    await db.query(query, [userId, weight, height, bmi, category, recommendations]);
 
-  getChartData(bmi) {
-    return {
-      labels: ['15', '18.5', '25', '30'],
-      datasets: [
-        {
-          label: 'Rango de IMC',
-          data: [
-            { x: 15, y: 0 },
-            { x: 18.5, y: 0 },
-            { x: 25, y: 0 },
-            { x: 30, y: 0 }
-          ],
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          borderColor: 'rgba(0, 0, 0, 1)',
-          borderWidth: 1,
-          pointRadius: 0,
-          fill: false,
-          showLine: true
-        },
-        {
-          label: 'Tu IMC',
-          data: [{ x: bmi, y: 0 }],
-          backgroundColor: 'rgba(255, 99, 132, 1)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          pointRadius: 10,
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-          fill: false
-        }
-      ]
-    };
+    return { bmi, category, recommendations };
   }
 }
 

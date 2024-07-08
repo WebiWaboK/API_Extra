@@ -6,7 +6,7 @@ class IGC {
     } else if (gender === 'female') {
       igc = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.221 * Math.log10(height)) - 450;
     }
-    return igc.toFixed(2);
+    return parseFloat(igc.toFixed(2)); // Asegúrate de que se devuelva un número con dos decimales
   }
 
   getCategory(igc, gender) {
